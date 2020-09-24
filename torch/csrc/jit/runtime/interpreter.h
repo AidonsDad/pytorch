@@ -126,5 +126,13 @@ struct InterpreterContinuation {
 TORCH_API at::TensorTypePtr tensorTypeInCurrentExecutionContext(
     const at::Tensor& t);
 
+// current (TLS) TorchScript interpreter callstack
+struct TORCH_API FileLineFunc {
+  std::string filename;
+  size_t line;
+  std::string funcname;
+};
+TORCH_API std::vector<FileLineFunc> currentCallstack();
+
 } // namespace jit
 } // namespace torch

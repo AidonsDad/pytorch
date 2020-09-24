@@ -517,7 +517,7 @@ void RequestCallbackNoPython::processRpc(
                 }
                 if (cuda_profiling_enabled &&
                     0 == strcmp(e.name(), "__cuda_start_event")) {
-                  e.setCudaUs(e.cpu_us());
+                  e.setCudaUs(e.cpuUs());
                   auto device = e.device();
                   TORCH_CHECK(
                       device != -1,
@@ -552,7 +552,7 @@ void RequestCallbackNoPython::processRpc(
                 // launched/ended, since deserialized event will not have a
                 // corresponding CUDA event.
                 for (auto& e : profiledEvents) {
-                  if (e.has_cuda()) {
+                  if (e.hasCuda()) {
                     auto cuda_device = e.device();
                     TORCH_CHECK(
                         cuda_device != -1,
@@ -565,9 +565,9 @@ void RequestCallbackNoPython::processRpc(
                             cuda_device));
                     auto cudaProfilerStartEvent = it->second;
                     double cuda_elapsed_us =
-                        cudaProfilerStartEvent->cuda_elapsed_us(e);
+                        cudaProfilerStartEvent->cudaElapsedUs(e);
                     int64_t cuda_us =
-                        cuda_elapsed_us + cudaProfilerStartEvent->cpu_us();
+                        cuda_elapsed_us + cudaProfilerStartEvent->cpuUs();
                     e.setCudaUs(cuda_us);
                   }
                 }
